@@ -1,11 +1,52 @@
-﻿let table = $('#temployee').DataTable({
+﻿var options = {
+    chart: {
+        type: 'pie'
+    },
+    series: [35, 45, 13, 33],
+    labels: ['Apple', 'Mango', 'Orange', 'Watermelon']
+}
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
+
+var chartku = {
+    series: [],
+    chart: {
+        type: 'donut'
+    },
+    dataLabels: {
+        enabled: true
+    },
+    title: {
+        text: 'Employee Gender',
+    },
+    noData: {
+        text: 'Loading...'
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#chart1"), chartku);
+chart.render();
+
+
+$.getJSON('https://localhost:7234/api/Employees', function (response) {
+    chart.updateSeries([{
+        name: 'gender',
+        data: response
+    }])
+});
+
+
+//TABLE
+let table = $('#temployee').DataTable({
     dom: '<"top"Blf>rtip',
     buttons: [
         {
             extend: 'copyHtml5',
             className: 'btn btn-secondary',
             exportOptions: {
-                columns: [0, ':visible']
+                columns: ':visible'
             }
         },
         {
@@ -83,7 +124,7 @@
                 return `<button class="btn btn-warning" onclick="Edit(\'${data}'\)" data-bs-toggle="modal" data-bs-target="#modalInsert">Edit</button>
                     <button class="btn btn-danger" onclick="Delete(\'${data}'\)" data-bs-toggle="tooltip" data-original-title="Edit user">Delete</button>`;
             }
-        },
+        }
     ]
 });
 
@@ -151,9 +192,14 @@ $(document).ready(function () {
             }
         },
         submitHandler: () => {
-            Insert();
+            if (check) {
+                Update();
+            }
+            else {
+                Insert()
+            }
         }
-    })
+    });
 });
 
 const Insert = () => {
@@ -197,11 +243,19 @@ const Insert = () => {
     })
 };
 
+let check
+
+const Add = () => {
+    check = false
+    $("#nik").attr("disabled", false);
+}
 const Edit = (key) => {
+    check = true
     $.ajax({
         url: `https://localhost:7234/api/Employees/${key}`
     }).done((result) => {
         $("#nik").val(result.data.nik),
+            $("#nik").attr("disabled", true);
         $("#firstName").val(result.data.firstName),
         $("#lastName").val(result.data.lastName),
         $("#phone").val(result.data.phone),

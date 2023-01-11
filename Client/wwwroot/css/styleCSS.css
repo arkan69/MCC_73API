@@ -1,0 +1,30 @@
+h1 {
+    text-align: center;
+}
+
+#pokemon-img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    color: white;
+}
+
+#myTab {
+    font-size: large;
+    font-weight: bold;
+}
+
+#info-head {
+    text-align: justify;
+    color: black;
+}
+
+.flavor-text {
+    margin-top: 10px;
+    font-style: italic;
+    font-weight: bold;
+}

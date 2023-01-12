@@ -70,7 +70,7 @@ $.ajax({
         var options = {
             chart: {
                 type: 'pie',
-                height: 350
+                height: 250
             },
             series: [male, female],
             labels: ['Male', 'Female']
@@ -85,7 +85,7 @@ $.ajax({
         }],
         chart: {
             type: 'bar',
-            height: 350
+            height: 250
         },
         plotOptions: {
             bar: {
@@ -115,6 +115,11 @@ let table = $('#temployee').DataTable({
             className: 'btn btn-secondary',
             exportOptions: {
                 columns: ':visible'
+            },
+            attr: {
+                title: 'Copy data',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top'
             }
         },
         {
@@ -122,6 +127,11 @@ let table = $('#temployee').DataTable({
             className: 'btn btn-success',
             exportOptions: {
                 columns: ':visible'
+            },
+            attr: {
+                title: 'Export to Excel',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top'
             }
         },
         {
@@ -129,6 +139,11 @@ let table = $('#temployee').DataTable({
             className: 'btn btn-info',
             exportOptions: {
                 columns: ':visible'
+            },
+            attr: {
+                title: 'Export to CSV',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top'
             }
         },
         {
@@ -136,11 +151,21 @@ let table = $('#temployee').DataTable({
             className: 'btn btn-danger',
             exportOptions: {
                 columns: ':visible'
+            },
+            attr: {
+                title: 'Export to PDF',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top'
             }
         },
         {
             extend: 'colvis',
-            className: 'btn btn-dark'
+            className: 'btn btn-dark',
+            attr: {
+                title: 'Ignore Column',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top'
+            }
         }
 
     ],

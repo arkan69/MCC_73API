@@ -40,10 +40,10 @@ a{
     color:white;
 }
 
-/*input.error {
+input.error {
     color: red;
     background-color: #acf;
-}*/
+}
 
 input.error, textarea.error, select.error {
     border-color: #f00;

@@ -1,42 +1,110 @@
-﻿var options = {
-    chart: {
-        type: 'pie'
-    },
-    series: [35, 45, 13, 33],
-    labels: ['Apple', 'Mango', 'Orange', 'Watermelon']
-}
+﻿////CHART
+//$.ajax({
+//    url:"https://localhost:7234/api/Employees"
+//}).done((data) => {
+//    console.log(data);
+//    var gender = data.data
+//        .map(x => ({ gender: x.gender }));
+//    var { gender0, gender1 } = gender.reduce((previous, current) => {
+//        if (current.gender === 0) {
+//            return { ...previous, gender0: previous.gender0 + 1 }
+//        } if (current.gender === 1) {
+//            return { ...previous, gender1: previous.gender1 + 1 }
+//        }
+//    }, { gender0: 0, gender1: 0 })
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+//    //PIE CHART
+//    var options = {
+//        chart: {
+//            type: 'pie',
+//            height: 350
+//        },
+//        series: [gender0, gender1],
+//        labels: ['Male', 'Female']
+//    }
+//    var chart = new ApexCharts(document.querySelector("#chart"), options);
+//    chart.render();
 
-chart.render();
+//    //BAR CHART
+//    var chartku = {
+//        series: [{
+//            data: [gender0, gender1]
+//        }],
+//        chart: {
+//            type: 'bar',
+//            height: 350
+//        },
+//        plotOptions: {
+//            bar: {
+//                borderRadius: 2,
+//                horizontal: false,
+//            }
+//        },
+//        dataLabels: {
+//            enabled: false
+//        },
+//        xaxis: {
+//            categories: ['Male', 'Female'],
+//        },
 
-var chartku = {
-    series: [],
-    chart: {
-        type: 'donut'
-    },
-    dataLabels: {
-        enabled: true
-    },
-    title: {
-        text: 'Employee Gender',
-    },
-    noData: {
-        text: 'Loading...'
+//    }
+//    var chart = new ApexCharts(document.querySelector("#chart1"), chartku);
+//    chart.render();
+//});
+
+let male = 0
+let female = 0
+$.ajax({
+    url: "https://localhost:7234/api/Employees",
+    dataType: "json",
+    success: function (result) {
+        for (var i = 0; i < result.data.length; i++) {
+            if (result.data[i].gender == 0) {
+                male += 1;
+            } else {
+                female += 1;
+            }
+        }
+
+        //PIE CHART
+        var options = {
+            chart: {
+                type: 'pie',
+                height: 350
+            },
+            series: [male, female],
+            labels: ['Male', 'Female']
+        }
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        //BAR CHART
+    var chartku = {
+        series: [{
+            data: [male, female]
+        }],
+        chart: {
+            type: 'bar',
+            height: 350
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 2,
+                horizontal: false,
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: ['Male', 'Female'],
+        },
+
     }
-};
-
-var chart = new ApexCharts(document.querySelector("#chart1"), chartku);
-chart.render();
-
-
-$.getJSON('https://localhost:7234/api/Employees', function (response) {
-    chart.updateSeries([{
-        name: 'gender',
-        data: response
-    }])
+    var chart = new ApexCharts(document.querySelector("#chart1"), chartku);
+    chart.render();
+    }
 });
-
 
 //TABLE
 let table = $('#temployee').DataTable({
@@ -68,7 +136,6 @@ let table = $('#temployee').DataTable({
             className: 'btn btn-danger',
             exportOptions: {
                 columns: ':visible'
-                //columns: [0, 1, 2, 3, 5, 6, 7]
             }
         },
         {
@@ -128,11 +195,15 @@ let table = $('#temployee').DataTable({
     ]
 });
 
+
+//FORM VALIDATE
 $(document).ready(function () {
     $("#formInsertEmployee").validate({
-        //error: function (label) {
-        //    $(this).addClass("error");
-        //},
+        /*code to make a sign on input element, if they're empty 
+        and the user click submit button, the input field will turn into red*/
+        error: function (label) {
+            $(this).addclass("error");
+        },
         rules: {
             nik: {
                 required: true,
@@ -192,7 +263,7 @@ $(document).ready(function () {
             }
         },
         submitHandler: () => {
-            if (check) {
+            if (check) { //CONDITION FOR MODAL, TO INSERT FUNCTION OR UPDATE FUNCTION
                 Update();
             }
             else {
@@ -202,8 +273,10 @@ $(document).ready(function () {
     });
 });
 
+//INSERT
 const Insert = () => {
     let employee = {
+        //NIK ETC are sensitive case, so watch your column name on your database
         nik: $("#nik").val(),
         firstName: $("#firstName").val(),
         lastName: $("#lastName").val(),
@@ -243,12 +316,16 @@ const Insert = () => {
     })
 };
 
+//variable check to help the modal will be pass to insert function or update function 
 let check
 
+//this to pass the modal on html
 const Add = () => {
     check = false
     $("#nik").attr("disabled", false);
 }
+
+//GET EMPLOYEE BY ID TO FILL THE MODAL FORM WITH EMPLOYEE VALUE THAT WANT TO BE EDITED
 const Edit = (key) => {
     check = true
     $.ajax({
@@ -257,15 +334,16 @@ const Edit = (key) => {
         $("#nik").val(result.data.nik),
             $("#nik").attr("disabled", true);
         $("#firstName").val(result.data.firstName),
-        $("#lastName").val(result.data.lastName),
-        $("#phone").val(result.data.phone),
-        $("#date").val(result.data.birthDate),
-        $("#salary").val(result.data.salary),
-        $("#email").val(result.data.email),
-        $("#gender").val(result.data.gender)
+            $("#lastName").val(result.data.lastName),
+            $("#phone").val(result.data.phone),
+            $("#date").val(result.data.birthDate),
+            $("#salary").val(result.data.salary),
+            $("#email").val(result.data.email),
+            $("#gender").val(result.data.gender)
     })
 }
 
+//Function to update data(put methode)
 const Update = () => {
     let updateEmployee = {
         nik: $("#nik").val(),
@@ -306,6 +384,7 @@ const Update = () => {
     })
 }
 
+//Delete function to delete the entire selected data
 const Delete = (key) => {
     Swal.fire({
         title: 'Are you sure?',

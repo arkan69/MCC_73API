@@ -10,7 +10,7 @@ namespace API.Base
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class BaseController<Entity,T,X> : ControllerBase 
         where Entity : class
         where X : IRepository<Entity,T>

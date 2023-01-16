@@ -1,10 +1,10 @@
 ﻿//CHART
 $.ajax({
-    url:"../employee/GetAll"
+    url: "../employee/GetAll"
+    //url: "https://localhost:7234/api/Employees"
 }).done((data) => {
     console.log(data);
-    var gender = data
-        .map(x => ({ gender: x.gender }));
+    var gender = data.map(x => ({ gender: x.gender }));
     var { gender0, gender1 } = gender.reduce((previous, current) => {
         if (current.gender === 0) {
             return { ...previous, gender0: previous.gender0 + 1 }

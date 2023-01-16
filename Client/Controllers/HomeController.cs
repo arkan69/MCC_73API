@@ -13,19 +13,30 @@ namespace Client.Controllers
             _logger = logger;
         }
 
+        [HttpGet("/Unauthorized")]
+        public IActionResult Unauthorized()
+        {
+            return View("401");
+        }
+
+        [HttpGet("/Forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("403");
+        }
+
+        [HttpGet("/Notfound")]
+        public IActionResult Notfound()
+        {
+            return View("404");
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        //http://localhost/Login
-        [HttpGet("/Login")]
-        public IActionResult Login()
         {
             return View();
         }

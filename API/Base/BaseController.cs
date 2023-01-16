@@ -10,7 +10,7 @@ namespace API.Base
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class BaseController<Entity,T,X> : ControllerBase 
         where Entity : class
         where X : IRepository<Entity,T>
@@ -30,7 +30,7 @@ namespace API.Base
                 var result = _repositories.Get();
                 return result.Count() == 0
                     ? Ok(new { statusCode = 200, message = "Data Not Found!" })
-                    : Ok(new { statusCode = 200, message = "Data Found!", data = result });
+                    : Ok(result );
             }
             catch
             {

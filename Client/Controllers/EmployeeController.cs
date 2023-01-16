@@ -1,34 +1,32 @@
-﻿using Client.ViewModels;
+﻿using API.Models;
+using API.ViewModels;
+using Client.Base;
+using Client.Repositories.Data;
+using Client.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Client.Controllers
 {
-    public class EmployeeController : Controller
+    //[Authorize]
+    public class EmployeeController : /*Controller*/BaseController<Employee, EmployeeRepository, string>
     {
+        private readonly EmployeeRepository repository;
+        public EmployeeController(EmployeeRepository repository) : base(repository)
+        {
+            this.repository = repository;
+        }
+
+        [HttpPost]
+        public JsonResult Register([FromBody] RegisterVM entity)
+        {
+            var result = repository.Register(entity);
+            return Json(result);
+        }
         public IActionResult Index()
         {
             return View();
         }
-
-        
-
-        //[HttpPost("/Login")]
-        //public IActionResult Login(LoginVM login)
-        //{
-        //    var result = _repo.Login(login);
-        //    if (result == 2)
-        //    {
-        //        HttpContext.Session.SetString("email", login.Email);
-        //        HttpContext.Session.SetString("role", _repo.UserRoles(login.Email).FirstOrDefault());
-        //        if (HttpContext.Session.GetString("role") == "Manager")
-        //        {
-        //            return RedirectToAction("Index", "Department");
-        //        }
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    ViewBag.error = "Login Failed";
-        //    return View();
-        //}
-
     }
 }

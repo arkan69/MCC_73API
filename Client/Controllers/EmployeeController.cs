@@ -9,7 +9,7 @@ using System.Data;
 
 namespace Client.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class EmployeeController : /*Controller*/BaseController<Employee, EmployeeRepository, string>
     {
         private readonly EmployeeRepository repository;

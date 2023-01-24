@@ -31,8 +31,6 @@ namespace Client.Repositories.Data
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
             var result = httpClient.PostAsync(address.link + "Accounts/Register", content).Result;
             return result.StatusCode;
-        }
-
-        
+        }        
     }
 }
